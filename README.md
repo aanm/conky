@@ -5,11 +5,11 @@ This repository provides a public copy of my conky config.
 conky_config
 -----
 To make it your own, you have to change lines 72, 76, 156 from conky_config.
-72: Put the mount directory of your external HDD or Pen Drive. If you don't use
+* 72: Put the mount directory of your external HDD or Pen Drive. If you don't use
 external HDD and/or Pen Drives, please delete this line and lines 100-102.
-76: Change $USER to your user name and put the repository's files inside
+* 76: Change $USER to your user name and put the repository's files inside
 /home/$USER/.conky/ directory.
-156: If you use a 3G bundle you can try and see if the signal.sh script gives
+* 156: If you use a 3G bundle you can try and see if the signal.sh script gives
 any value for the 3G bundle signal.
 
 If you use Nvidia Drivers (oficial drivers) uncomment lines 107-110.
