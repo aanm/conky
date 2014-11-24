@@ -135,8 +135,9 @@ ${top_mem name 5} $alignr ${top_mem pid 5} ${top_mem cpu 5} ${top_mem mem 5}
 #################
 ${font :size=8:style=Bold}NETWORK${font} ${hr 2}
 ${if_up p3p1}
+${voffset -30}
 IP: $alignr ${addr p3p1}
-External IP: ${alignr}${execi 900 wget -O ${template7} http://ipecho.net/plain && cat ${template7}}
+External IP: ${alignr}${execi 900 wget -O ${template7} http://ipecho.net/plain }${execi 800 cat ${template7}}
 ${downspeedgraph p3p1 -l}
 Down: ${downspeed p3p1}/s $alignr Total: ${totaldown p3p1}
 ${upspeedgraph p3p1 -l}
@@ -146,24 +147,26 @@ ${voffset -30}
 Connection quality: ${wireless_link_bar wlp3s0}
 ESSID: $alignr ${wireless_essid wlp3s0}
 IP: $alignr ${addr wlp3s0}
-External IP: ${alignr}${execi 900 wget -O ${template7} http://ipecho.net/plain && cat ${template7}}
+External IP: ${alignr}${execi 900 wget -O ${template7} http://ipecho.net/plain }${execi 800 cat ${template7}}
 ${downspeedgraph wlp3s0 -l}
 Down: ${downspeed wlp3s0}/s $alignr Total: ${totaldown wlp3s0}
 ${upspeedgraph wlp3s0 -l}
 Up: ${upspeed wlp3s0}/s $alignr Total: ${totalup wlp3s0}
 ${else}${if_up ppp0}
-${voffset -45}
+${voffset -30}
 Signal: ${execbar sh /home/$USER/signal.sh}
 External IP: $alignr ${addr ppp0}
 ${downspeedgraph ppp0 -l}
 Down: ${downspeed ppp0}/s $alignr Total: ${totaldown ppp0}
 ${upspeedgraph ppp0 -l}
 Up: ${upspeed ppp0}/s $alignr Total: ${totalup ppp0}
+${voffset +5}
 $endif
-${voffset -45}
+${voffset -50}
 $endif
-${voffset -45}
+${voffset -30}
 $endif
+${voffset -30}
 
 ###############
 ##  WEATHER  ##

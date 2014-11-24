@@ -22,7 +22,7 @@ __author__ = "André Martins"
 __copyright__ = "Copyright 2014"
 __credits__ = "André Martins"
 __license__ = "MIT"
-__version__ = "2014.11.23"
+__version__ = "1.0"
 __maintainer__ = "André Martins"
 __email__ = "aanm90@gmail.com"
 __status__ = "Stable"
@@ -163,9 +163,12 @@ def is_night(time, sunrise, sunset):
 def calc_wind(w_spd, w_dir):
  w_dir = float(w_dir)
  w_spd = float(w_spd)
- w_dir = int(((w_dir*16.0)/360.0)) + 0x31
  w_spd = int(round(Decimal(w_spd*1.6), 0))
- w_dir += 16*int(w_spd/25)
+ if w_spd == 0:
+  w_dir = 0x25
+ else:
+  w_dir = int(((w_dir*16.0)/360.0)) + 0x31
+  w_dir += 16*int(w_spd/25)
  return (w_spd, chr(w_dir))
 
 def calc_min_max_temp(time, time_entries):
