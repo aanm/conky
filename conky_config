@@ -1,0 +1,174 @@
+${exec kill -STOP $(pidof conky)}
+# Create own window instead of using desktop
+own_window yes
+own_window_transparent yes
+own_window_argb_visual yes
+own_window_type normal
+own_window_class conky-semi
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_argb_visual yes
+background no
+
+# Use Xft?
+use_xft yes
+xftfont Lucida Console:size=10
+#xftalpha 0.8
+text_buffer_size 2048
+
+# Update interval in seconds
+update_interval 2
+update_interval_on_battery 3
+
+# Use double buffering
+double_buffer yes
+
+# Draw shades?
+draw_shades no
+
+# Draw outlines?
+draw_outline no
+
+# Draw borders around text
+draw_borders no
+
+# Stippled borders?
+stippled_borders 0
+
+# border width
+border_width 1
+
+# Default colors and also border colors
+default_color white
+default_shade_color black
+default_outline_color white
+own_window_colour black
+color1 white
+minimum_size 200 5
+maximum_width 230
+gap_x 10
+gap_y 5
+alignment top_right
+
+# Subtract file system buffers from used memory?
+no_buffers yes
+
+# Force UTF8? note that UTF8 support required XFT
+override_utf8_locale yes
+
+# set to yes if you want all text to be in uppercase
+uppercase no
+
+# Make network interfaces appear as up only if they already have an IP address
+# Possible options: up, link, address
+if_up_strictness address
+
+# Templates
+# template0-6 are used for filesystems in HDD section
+# Root fs
+template0 /
+# Home fs
+template1 /home/
+# External media
+template6 /run/media/external_disk
+# Document that contains my public_ip
+template7 /tmp/conky_public_ip
+# template8-9 are used by WEATHER section
+template8 /home/$USER/.conky/weather_update.py
+template9 /tmp/conky_results
+
+TEXT
+###############
+##  SYSTEM   ##
+###############
+${font :size=8:style=Bold}SYSTEM${font} ${hr 2}
+Kernel:  ${alignr}${kernel}
+CPU freq: ${alignr}${freq} MHz
+CPU0:${execi 2 sensors | grep "Core 0" | cut -c 16-23} ${goto 104}${cpu cpu1}% ${goto 144}${cpubar cpu1 8,25} ${goto 172}${cpu cpu2}% ${goto 210}${cpubar cpu2 8,25}
+CPU0:${execi 2 sensors | grep "Core 1" | cut -c 16-23} ${goto 104}${cpu cpu3}% ${goto 144}${cpubar cpu3 8,25} ${goto 172}${cpu cpu4}% ${goto 210}${cpubar cpu4 8,25}
+RAM:    ${mem}/${memmax} ${alignr}${membar 8,60}
+Uptime: ${alignr}${uptime}
+Battery: ${alignr}${battery_time} ${battery_bar 8,60}
+
+################
+## HARD DRIVE ##
+################
+${font :size=8:style=Bold}HDD${font} ${hr 2}
+Read: ${alignr}${diskio_read}
+Write: ${alignr}${diskio_write}
+Root: ${fs_used ${template0}}|${fs_free ${template0}} ${alignr}${fs_bar 8,45 ${template0}}
+Home: ${fs_used ${template1}}|${fs_free ${template1}} ${alignr}${fs_bar 8,45 ${template1}}
+#Create HDDs only if they're attached
+${if_existing ${template6}}Media: ${fs_used ${template6}}|${fs_free ${template6}} ${alignr}${fs_bar 8,45 ${template6}}
+$else${voffset -15}$endif
+
+################
+##    GPU     ##
+################
+#${font :size=8:style=Bold}NVIDIA${font} ${hr 2}
+#GPU Temp: ${alignr} ${exec nvidia-settings -q GPUCoreTemp | grep Attribute | cut -d ' ' -f 6 | cut -c 1-2}°С
+#Driver Version:${alignr} ${exec nvidia-settings -q NvidiaDriverVersion -t}
+#
+#######################
+##   CPU PROCESSES   ##
+#######################
+${font :size=8:style=Bold}PROCESSES CPU USE${font} ${hr 2}
+NAME $alignr PID    CPU   MEM
+${top name 1} $alignr ${top pid 1} ${top cpu 1} ${top mem 1}
+${top name 2} $alignr ${top pid 2} ${top cpu 2} ${top mem 2}
+${top name 3} $alignr ${top pid 3} ${top cpu 3} ${top mem 3}
+${top name 4} $alignr ${top pid 4} ${top cpu 4} ${top mem 4}
+${top name 5} $alignr ${top pid 5} ${top cpu 5} ${top mem 5}
+
+#######################
+##   MEM PROCESSES   ##
+#######################
+${font :size=8:style=Bold}PROCESSES MEM USE${font} ${hr 2}
+NAME $alignr PID    CPU    MEM
+${top_mem name 1} $alignr ${top_mem pid 1} ${top_mem cpu 1} ${top_mem mem 1}
+${top_mem name 2} $alignr ${top_mem pid 2} ${top_mem cpu 2} ${top_mem mem 2}
+${top_mem name 3} $alignr ${top_mem pid 3} ${top_mem cpu 3} ${top_mem mem 3}
+${top_mem name 4} $alignr ${top_mem pid 4} ${top_mem cpu 4} ${top_mem mem 4}
+${top_mem name 5} $alignr ${top_mem pid 5} ${top_mem cpu 5} ${top_mem mem 5}
+
+#################
+##   NETWORK   ##
+#################
+${font :size=8:style=Bold}NETWORK${font} ${hr 2}
+${if_up p3p1}
+IP: $alignr ${addr p3p1}
+External IP: ${alignr}${execi 900 wget -O ${template7} http://ipecho.net/plain && cat ${template7}}
+${downspeedgraph p3p1 -l}
+Down: ${downspeed p3p1}/s $alignr Total: ${totaldown p3p1}
+${upspeedgraph p3p1 -l}
+Up: ${upspeed p3p1}/s $alignr Total: ${totalup p3p1}
+${else}${if_match "${wireless_essid wlp3s0}" != "off/any"}
+${voffset -30}
+Connection quality: ${wireless_link_bar wlp3s0}
+ESSID: $alignr ${wireless_essid wlp3s0}
+IP: $alignr ${addr wlp3s0}
+External IP: ${alignr}${execi 900 wget -O ${template7} http://ipecho.net/plain && cat ${template7}}
+${downspeedgraph wlp3s0 -l}
+Down: ${downspeed wlp3s0}/s $alignr Total: ${totaldown wlp3s0}
+${upspeedgraph wlp3s0 -l}
+Up: ${upspeed wlp3s0}/s $alignr Total: ${totalup wlp3s0}
+${else}${if_up ppp0}
+${voffset -45}
+Signal: ${execbar sh /home/$USER/signal.sh}
+External IP: $alignr ${addr ppp0}
+${downspeedgraph ppp0 -l}
+Down: ${downspeed ppp0}/s $alignr Total: ${totaldown ppp0}
+${upspeedgraph ppp0 -l}
+Up: ${upspeed ppp0}/s $alignr Total: ${totalup ppp0}
+$endif
+${voffset -45}
+$endif
+${voffset -45}
+$endif
+
+###############
+##  WEATHER  ##
+###############
+${font :size=8:style=Bold}WEATHER${font} ${hr 2}
+${catp ${template9}}
+${execi 500 python ${template8}}
+${exec kill -CONT $(pidof conky)}
