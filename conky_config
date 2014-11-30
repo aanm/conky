@@ -98,8 +98,7 @@ Write: ${alignr}${diskio_write}
 Root: ${fs_used ${template0}}|${fs_free ${template0}} ${alignr}${fs_bar 8,45 ${template0}}
 Home: ${fs_used ${template1}}|${fs_free ${template1}} ${alignr}${fs_bar 8,45 ${template1}}
 #Create HDDs only if they're attached
-${if_existing ${template6}}Media: ${fs_used ${template6}}|${fs_free ${template6}} ${alignr}${fs_bar 8,45 ${template6}}
-$else${voffset -15}$endif
+${if_existing ${template6}}Media: ${fs_used ${template6}}|${fs_free ${template6}} ${alignr}${fs_bar 8,45 ${template6}}$else${voffset -15}$endif
 
 ################
 ##    GPU     ##

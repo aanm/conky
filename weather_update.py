@@ -22,7 +22,7 @@ __author__ = "André Martins"
 __copyright__ = "Copyright 2014"
 __credits__ = "André Martins"
 __license__ = "MIT"
-__version__ = "1.0"
+__version__ = "1.0.1"
 __maintainer__ = "André Martins"
 __email__ = "aanm90@gmail.com"
 __status__ = "Stable"
@@ -220,8 +220,11 @@ for time_entry in time_entries:
  time_from = parse(time_entry.get('from'))
  time_to = parse(time_entry.get('to'))
  if moments[i][time] > time_from and moments[i][time] < time_to:
-  sunrise = sunrise + relativedelta(day=moments[i][time].day)
-  sunset = sunset + relativedelta(day=moments[i][time].day)
+  next_year = moments[i][time].year
+  next_month = moments[i][time].month
+  next_day = moments[i][time].day
+  sunrise = sunrise + relativedelta(year=next_year, month=next_month, day=next_day)
+  sunset = sunset + relativedelta(year=next_year, month=next_month, day=next_day)
   night = is_night(moments[i][time], sunrise, sunset)
   (moments[i][min_temp], moments[i][max_temp]) = calc_min_max_temp(moments[i][time], time_entries)
   moments[i][icon] = icons[int(time_entry.find('symbol').get('number'))][night]
