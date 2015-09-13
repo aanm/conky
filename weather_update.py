@@ -19,10 +19,10 @@ from collections import defaultdict
 from decimal import Decimal
 
 __author__ = "André Martins"
-__copyright__ = "Copyright 2014"
+__copyright__ = "Copyright 2015"
 __credits__ = "André Martins"
 __license__ = "MIT"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __maintainer__ = "André Martins"
 __email__ = "aanm90@gmail.com"
 __status__ = "Stable"
@@ -76,7 +76,7 @@ moments[2] = [second, None, None, None, None, '-', None]
 moments[3] = [third, None, None, None, None, '-', None]
 
 weekday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-temp_units = {'celsius':'ºC', 'imperial':'ºF'}
+temp_units = {'metric':'ºC', 'imperial':'ºF'}
 
 ####
 # Table made accordingly with http://openweathermap.org/weather-conditions
