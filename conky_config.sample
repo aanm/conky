@@ -69,11 +69,11 @@ template0 /
 # Home fs
 template1 /home/
 # External media
-template6 /run/media/external_disk
+${COMMENT}template6 ${HDD_PATH}
 # Document that contains my public_ip
 template7 /tmp/conky_public_ip
 # template8-9 are used by WEATHER section
-template8 /home/$USER/.conky/weather_update.py
+template8 ${CONKY_PATH}/weather_update.py
 template9 /tmp/conky_results
 
 TEXT
@@ -98,7 +98,7 @@ Write: ${alignr}${diskio_write}
 Root: ${fs_used ${template0}}|${fs_free ${template0}} ${alignr}${fs_bar 8,45 ${template0}}
 Home: ${fs_used ${template1}}|${fs_free ${template1}} ${alignr}${fs_bar 8,45 ${template1}}
 #Create HDDs only if they're attached
-${if_existing ${template6}}Media: ${fs_used ${template6}}|${fs_free ${template6}} ${alignr}${fs_bar 8,45 ${template6}}$else${voffset -15}$endif
+${COMMENT}${if_existing ${template6}}Media: ${fs_used ${template6}}|${fs_free ${template6}} ${alignr}${fs_bar 8,45 ${template6}}$else${voffset -15}$endif
 
 ################
 ##    GPU     ##
@@ -153,7 +153,7 @@ ${upspeedgraph wlp3s0 -l}
 Up: ${upspeed wlp3s0}/s $alignr Total: ${totalup wlp3s0}
 ${else}${if_up ppp0}
 ${voffset -30}
-Signal: ${execbar sh /home/$USER/signal.sh}
+Signal: ${execbar sh ${CONKY_PATH}/signal.sh}
 External IP: $alignr ${addr ppp0}
 ${downspeedgraph ppp0 -l}
 Down: ${downspeed ppp0}/s $alignr Total: ${totaldown ppp0}
